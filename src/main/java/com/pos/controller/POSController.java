@@ -3,11 +3,11 @@ package com.pos.controller;
 import com.pos.models.Product;
 import com.pos.models.Sale;
 import com.pos.models.SaleItem;
-import com.pos.service.AuthenticationService;
-import com.pos.service.ProductService;
-import com.pos.service.SaleService;
+import com.pos.services.AuthenticationService;
+import com.pos.services.ProductService;
+import com.pos.services.SaleService;
 import com.pos.utils.AlertUtil;
-import com.pos.service.BarcodeScannerService;
+import com.pos.services.BarcodeScannerService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -515,4 +515,5 @@ public class POSController implements Initializable {
         stage.setTitle(title);
         stage.show();
     }
+
 }

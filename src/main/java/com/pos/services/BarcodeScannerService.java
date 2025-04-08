@@ -1,4 +1,4 @@
-package com.pos.service;
+package com.pos.services;
 
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane prefWidth="700.0" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" styleClass="sale-detail-dialog">
+    <content>
+        <VBox spacing="15.0">
+            <children>
+                <!-- Información general de la venta -->
+                <GridPane hgap="10.0" vgap="5.0" styleClass="sale-info-panel">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Factura:" styleClass="label-bold" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                        <Label fx:id="invoiceNumberLabel" text="--" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                        <Label text="Fecha:" styleClass="label-bold" GridPane.rowIndex="0" GridPane.columnIndex="2" />
+                        <Label fx:id="saleDateLabel" text="--" GridPane.rowIndex="0" GridPane.columnIndex="3" />
+
+                        <Label text="Cliente:" styleClass="label-bold" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                        <Label fx:id="customerNameLabel" text="--" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                        <Label text="RFC:" styleClass="label-bold" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+                        <Label fx:id="customerTaxIdLabel" text="--" GridPane.rowIndex="1" GridPane.columnIndex="3" />
+
+                        <Label text="Cajero:" styleClass="label-bold" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                        <Label fx:id="cashierLabel" text="--" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                        <Label text="Estado:" styleClass="label-bold" GridPane.rowIndex="2" GridPane.columnIndex="2" />
+                        <Label fx:id="statusLabel" text="--" GridPane.rowIndex="2" GridPane.columnIndex="3" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </GridPane>
+
+                <!-- Tabla de ítems -->
+                <TableView fx:id="itemsTable" prefHeight="300.0">
+                    <columns>
+                        <TableColumn fx:id="productColumn" prefWidth="250.0" text="Producto" />
+                        <TableColumn fx:id="quantityColumn" prefWidth="80.0" text="Cantidad" />
+                        <TableColumn fx:id="unitPriceColumn" prefWidth="100.0" text="Precio Unit." />
+                        <TableColumn fx:id="discountColumn" prefWidth="100.0" text="Descuento" />
+                        <TableColumn fx:id="totalColumn" prefWidth="100.0" text="Total" />
+                    </columns>
+                </TableView>
+
+                <!-- Totales -->
+                <HBox alignment="CENTER_RIGHT" spacing="15.0" styleClass="totals-panel">
+                    <children>
+                        <VBox alignment="CENTER_RIGHT" spacing="5.0">
+                            <children>
+                                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                                    <children>
+                                        <Label text="Subtotal:" styleClass="label-bold" />
+                                        <Label fx:id="subtotalLabel" styleClass="amount-label" text="$0.00" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                                    <children>
+                                        <Label text="IVA (16%):" styleClass="label-bold" />
+                                        <Label fx:id="taxLabel" styleClass="amount-label" text="$0.00" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                                    <children>
+                                        <Label text="TOTAL:" styleClass="total-label" />
+                                        <Label fx:id="totalLabel" styleClass="total-amount" text="$0.00" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </content>
+</DialogPane>

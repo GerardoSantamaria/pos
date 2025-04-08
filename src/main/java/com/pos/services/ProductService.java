@@ -1,4 +1,4 @@
-package com.pos.service;
+package com.pos.services;
 
 import com.pos.models.Product;
 import com.pos.repositories.CategoryRepository;

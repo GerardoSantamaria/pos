@@ -6,7 +6,9 @@
 <?import javafx.scene.text.Font?>
 
 <DialogPane prefWidth="600.0" xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1" styleClass="form-dialog">
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.pos.controller.ProductController"
+            styleClass="form-dialog">
     <content>
         <GridPane hgap="10.0" vgap="10.0">
             <columnConstraints>

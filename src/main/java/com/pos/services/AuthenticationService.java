@@ -1,4 +1,4 @@
-package com.pos.service;
+package com.pos.services;
 
 import com.pos.models.User;
 import com.pos.repositories.UserRepository;

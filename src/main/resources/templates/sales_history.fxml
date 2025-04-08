@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controller.SalesHistoryController"
+            styleClass="main-container">
+
+    <!-- Panel superior con título y filtros -->
+    <top>
+        <VBox spacing="10.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="section-header">
+                    <children>
+                        <Label text="Historial de Ventas" styleClass="section-title">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshSales"
+                                styleClass="action-button" text="Refrescar" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                    </padding>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="filter-bar">
+                    <children>
+                        <Label text="Desde:" />
+                        <DatePicker fx:id="fromDatePicker" prefWidth="150.0" />
+                        <Label text="Hasta:" />
+                        <DatePicker fx:id="toDatePicker" prefWidth="150.0" />
+                        <ComboBox fx:id="statusComboBox" prefWidth="150.0" promptText="Estado" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="filterButton" mnemonicParsing="false" onAction="#applyFilters"
+                                styleClass="action-button" text="Filtrar" />
+                        <Button fx:id="clearFilterButton" mnemonicParsing="false" onAction="#clearFilters"
+                                styleClass="secondary-button" text="Limpiar" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="15.0" right="15.0" top="5.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <!-- Panel central con la tabla de ventas -->
+    <center>
+        <VBox spacing="10.0" styleClass="content-panel">
+            <children>
+                <TableView fx:id="salesTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="invoiceColumn" prefWidth="120.0" text="# Factura" />
+                        <TableColumn fx:id="dateColumn" prefWidth="150.0" text="Fecha/Hora" />
+                        <TableColumn fx:id="customerColumn" prefWidth="200.0" text="Cliente" />
+                        <TableColumn fx:id="cashierColumn" prefWidth="150.0" text="Cajero" />
+                        <TableColumn fx:id="paymentMethodColumn" prefWidth="120.0" text="Método de Pago" />
+                        <TableColumn fx:id="totalColumn" prefWidth="100.0" text="Total" />
+                        <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Estado" />
+                        <TableColumn fx:id="actionsColumn" prefWidth="100.0" text="Acciones" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                    <children>
+                        <Label text="Total Ventas:" styleClass="total-label" />
+                        <Label fx:id="totalSalesLabel" styleClass="total-amount" text="$0.00" />
+                    </children>
+                    <padding>
+                        <Insets right="15.0" />
+                    </padding>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

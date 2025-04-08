@@ -159,20 +159,20 @@
                                                 <HBox alignment="CENTER_RIGHT" spacing="20.0">
                                                     <children>
                                                         <Label text="Subtotal:" />
-                                                        <Label fx:id="subtotalLabel" styleClass="amount-label" text="$0.00" />
+                                                        <Label fx:id="subtotalLabel" styleClass="amount-label" text="0" />
                                                     </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER_RIGHT" spacing="20.0">
                                                     <children>
                                                         <Label text="IVA (16%):" />
-                                                        <Label fx:id="taxLabel" styleClass="amount-label" text="$0.00" />
+                                                        <Label fx:id="taxLabel" styleClass="amount-label" text="0" />
                                                     </children>
                                                 </HBox>
                                                 <Separator />
                                                 <HBox alignment="CENTER_RIGHT" spacing="20.0">
                                                     <children>
                                                         <Label text="TOTAL:" styleClass="total-label" />
-                                                        <Label fx:id="totalLabel" styleClass="total-amount" text="$0.00" />
+                                                        <Label fx:id="totalLabel" styleClass="total-amount" text="0" />
                                                     </children>
                                                 </HBox>
                                             </children>

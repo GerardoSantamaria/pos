@@ -1,6 +1,6 @@
 package com.pos.controller;
 
-import com.pos.service.AuthenticationService;
+import com.pos.services.AuthenticationService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
