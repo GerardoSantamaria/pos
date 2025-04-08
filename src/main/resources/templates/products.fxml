@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controller.ProductController"
+            styleClass="main-container">
+
+    <!-- Panel superior con título y botones de acción -->
+    <top>
+        <VBox spacing="10.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="section-header">
+                    <children>
+                        <Label text="Gestión de Productos" styleClass="section-title">
+                            <font>
+                                <Font name="System Bold" size="18.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="searchField" prefWidth="250.0" promptText="Buscar productos..." />
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchProducts"
+                                styleClass="search-button" text="Buscar" />
+                        <Button fx:id="newProductButton" mnemonicParsing="false" onAction="#openNewProductDialog"
+                                styleClass="new-button" text="Nuevo Producto" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+
+    <!-- Panel central con la tabla de productos -->
+    <center>
+        <VBox spacing="10.0" styleClass="content-panel">
+            <children>
+                <TableView fx:id="productsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="skuColumn" prefWidth="100.0" text="SKU" />
+                        <TableColumn fx:id="barcodeColumn" prefWidth="150.0" text="Código de Barras" />
+                        <TableColumn fx:id="nameColumn" prefWidth="250.0" text="Nombre" />
+                        <TableColumn fx:id="priceColumn" prefWidth="100.0" text="Precio" />
+                        <TableColumn fx:id="stockColumn" prefWidth="80.0" text="Stock" />
+                        <TableColumn fx:id="categoryColumn" prefWidth="150.0" text="Categoría" />
+                        <TableColumn fx:id="actionsColumn" prefWidth="120.0" text="Acciones" />
+                    </columns>
+                </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <children>
+                        <Label fx:id="totalProductsLabel" text="Total de productos: 0" />
+                    </children>
+                    <padding>
+                        <Insets right="15.0" />
+                    </padding>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controller.LoginController">
+    <children>
+        <VBox alignment="CENTER" maxWidth="400.0" spacing="20.0" styleClass="login-panel">
+            <children>
+                <Label styleClass="app-title" text="POS System">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+
+                <Label text="Acceso al Sistema" styleClass="section-title">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+
+                <TextField fx:id="usernameField" promptText="Usuario" styleClass="input-field" />
+
+                <PasswordField fx:id="passwordField" promptText="Contraseña" styleClass="input-field" />
+
+                <Button fx:id="loginButton" defaultButton="true" maxWidth="Infinity" mnemonicParsing="false"
+                        onAction="#handleLogin" styleClass="primary-button" text="Iniciar Sesión" />
+
+                <Label fx:id="errorLabel" textFill="RED" visible="false" wrapText="true" />
+            </children>
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+        </VBox>
+    </children>
+</StackPane>

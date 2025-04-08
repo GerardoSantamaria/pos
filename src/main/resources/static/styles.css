@@ -1,0 +1,316 @@
+/* Estilos globales */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #F8F9FA;
+}
+
+/* Colores principales de la aplicación */
+* {
+    -primary-color: #4A6FA5;
+    -primary-dark-color: #3A5A8C;
+    -primary-light-color: #6B89BA;
+    -secondary-color: #E9ECEF;
+    -text-color: #343A40;
+    -danger-color: #DC3545;
+    -success-color: #28A745;
+    -warning-color: #FFC107;
+    -info-color: #17A2B8;
+}
+
+/* Estilos de Login */
+.login-panel {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-background-radius: 5px;
+}
+
+.app-title {
+    -fx-font-size: 24px;
+    -fx-text-fill: -primary-color;
+    -fx-font-weight: bold;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-text-fill: -text-color;
+    -fx-font-weight: bold;
+}
+
+.input-field {
+    -fx-padding: 10px;
+    -fx-background-color: white;
+    -fx-border-color: #CED4DA;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-font-size: 14px;
+}
+
+.input-field:focused {
+    -fx-border-color: -primary-color;
+    -fx-border-width: 2px;
+}
+
+/* Estilos de botones */
+.button {
+    -fx-background-radius: 3px;
+    -fx-cursor: hand;
+    -fx-transition: -fx-background-color 0.2s;
+}
+
+.primary-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
+
+.primary-button:hover {
+    -fx-background-color: -primary-dark-color;
+}
+
+.success-button {
+    -fx-background-color: -success-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+}
+
+.success-button:hover {
+    -fx-background-color: derive(-success-color, -10%);
+}
+
+.danger-button {
+    -fx-background-color: -danger-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+}
+
+.danger-button:hover {
+    -fx-background-color: derive(-danger-color, -10%);
+}
+
+.action-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 7px 12px;
+}
+
+.action-button:hover {
+    -fx-background-color: -primary-dark-color;
+}
+
+/* Interfaz principal */
+.main-container {
+    -fx-background-color: -secondary-color;
+}
+
+/* Encabezado */
+.header {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+}
+
+.header .label {
+    -fx-text-fill: white;
+}
+
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-radius: 3px;
+    -fx-padding: 5px 10px;
+}
+
+.logout-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Barra lateral */
+.sidebar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -text-color;
+    -fx-alignment: BASELINE_LEFT;
+    -fx-padding: 10px 15px;
+    -fx-font-size: 14px;
+}
+
+.menu-button:hover {
+    -fx-background-color: -secondary-color;
+}
+
+.active-menu-button {
+    -fx-background-color: -primary-light-color;
+    -fx-text-fill: white;
+}
+
+/* Área de contenido */
+.content-area {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+}
+
+.section-header {
+    -fx-background-color: -secondary-color;
+    -fx-border-color: transparent transparent #DEE2E6 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.new-button {
+    -fx-background-color: -success-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.new-button:hover {
+    -fx-background-color: derive(-success-color, -10%);
+}
+
+/* Tabla de productos */
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
+}
+
+.table-view .table-cell {
+    -fx-padding: 8px;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #F2F2F2;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: derive(-primary-color, 80%);
+}
+
+/* Panel de pago */
+.payment-panel {
+    -fx-background-color: #F8F9FA;
+    -fx-background-radius: 5px;
+    -fx-border-color: #DEE2E6;
+    -fx-border-radius: 5px;
+}
+
+.totals-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-border-color: #DEE2E6;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-min-width: 250px;
+}
+
+.amount-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.total-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.total-amount {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -primary-color;
+}
+
+/* Campos de búsqueda */
+.search-field {
+    -fx-padding: 7px;
+    -fx-background-color: white;
+    -fx-border-color: #CED4DA;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+.search-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: white;
+    -fx-padding: 7px 12px;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #CED4DA;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 5px 10px;
+}
+
+/* Splits y divisores */
+.split-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: #DEE2E6;
+    -fx-padding: 0 1px 0 1px;
+}
+
+/* Animaciones y transiciones */
+.animated-transition {
+    -fx-transition: -fx-background-color 0.3s ease-in-out;
+}
+
+/* Tooltip personalizado */
+.tooltip {
+    -fx-background-color: -text-color;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+}
+
+/* Utilidades de texto */
+.text-danger {
+    -fx-text-fill: -danger-color;
+}
+
+.text-success {
+    -fx-text-fill: -success-color;
+}
+
+.text-warning {
+    -fx-text-fill: -warning-color;
+}
+
+.text-muted {
+    -fx-text-fill: #6C757D;
+}
+
+.text-small {
+    -fx-font-size: 11px;
+}
+
+.text-large {
+    -fx-font-size: 16px;
+}
