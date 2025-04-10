@@ -1,56 +1,67 @@
 package com.pos;
 
+import com.pos.config.StageManager;
+import com.pos.config.ViewConfiguration;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+/**
+ * Main application class that serves as the entry point for the POS system.
+ * Integrates Spring Boot with JavaFX.
+ */
 @SpringBootApplication
 public class MainApp extends Application {
 
 	private ConfigurableApplicationContext springContext;
-	private Parent rootNode;
-	private FXMLLoader fxmlLoader;
+	private StageManager stageManager;
 
+	/**
+	 * Main method that launches the JavaFX application.
+	 *
+	 * @param args Command line arguments
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * Initializes Spring context before JavaFX application starts.
+	 *
+	 * @throws Exception If initialization fails
+	 */
 	@Override
 	public void init() throws Exception {
-		// Iniciar el contexto de Spring Boot
 		springContext = SpringApplication.run(MainApp.class);
-
-		// Preparar el cargador de FXML con el contexto de Spring
-		fxmlLoader = new FXMLLoader(getClass().getResource("/templates/login.fxml"));
-		fxmlLoader.setControllerFactory(springContext::getBean);
-
-		// Cargar la vista
-		rootNode = fxmlLoader.load();
 	}
 
+	/**
+	 * Starts the JavaFX application, setting up the primary stage and showing the login screen.
+	 *
+	 * @param primaryStage The primary stage for the application
+	 */
 	@Override
 	public void start(Stage primaryStage) {
-		// Configurar la escena y el escenario
-		primaryStage.setTitle("Sistema POS");
+		stageManager = springContext.getBean(StageManager.class);
+		stageManager.setPrimaryStage(primaryStage);
 
-		Scene scene = new Scene(rootNode, 1024, 768);
-		scene.getStylesheets().add(getClass().getResource("/static/css/styles.css").toExternalForm());
+		// Set application title
+		primaryStage.setTitle("POS System");
 
-		primaryStage.setScene(scene);
-		primaryStage.setMinWidth(800);
-		primaryStage.setMinHeight(600);
-		primaryStage.show();
+		// Display login screen
+		stageManager.switchScene(ViewConfiguration.LOGIN_VIEW);
 	}
 
+	/**
+	 * Cleans up resources when the application is stopped.
+	 *
+	 * @throws Exception If cleanup fails
+	 */
 	@Override
-	public void stop() {
-		// Cerrar el contexto de Spring al salir
+	public void stop() throws Exception {
 		springContext.close();
 		Platform.exit();
 	}

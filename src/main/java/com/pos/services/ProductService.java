@@ -1,125 +1,186 @@
 package com.pos.services;
 
 import com.pos.models.Product;
-import com.pos.repositories.CategoryRepository;
 import com.pos.repositories.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service for managing Product entities.
+ */
 @Service
 public class ProductService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
-
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
 
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    /**
+     * Constructor with dependencies.
+     *
+     * @param productRepository The product repository
+     */
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
     }
 
     /**
-     * Busca un producto por código de barras
+     * Creates a new product.
+     *
+     * @param product The product to create
+     * @return The created product
+     * @throws IllegalArgumentException If a product with the same barcode already exists
+     */
+    @Transactional
+    public Product createProduct(Product product) {
+        if (productRepository.existsByBarcode(product.getBarcode())) {
+            throw new IllegalArgumentException("Ya existe un producto con el código de barras: " + product.getBarcode());
+        }
+        return productRepository.save(product);
+    }
+
+    /**
+     * Updates an existing product.
+     *
+     * @param product The product to update
+     * @return The updated product
+     * @throws IllegalArgumentException If the product is not found
+     */
+    @Transactional
+    public Product updateProduct(Product product) {
+        // Get existing product
+        Product existingProduct = productRepository.findById(product.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado: " + product.getId()));
+
+        // Check if barcode is being changed and if the new barcode already exists
+        if (!existingProduct.getBarcode().equals(product.getBarcode()) &&
+                productRepository.existsByBarcode(product.getBarcode())) {
+            throw new IllegalArgumentException("Ya existe un producto con el código de barras: " + product.getBarcode());
+        }
+
+        // Update fields
+        existingProduct.setBarcode(product.getBarcode());
+        existingProduct.setName(product.getName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setStock(product.getStock());
+
+        // Save updated product
+        return productRepository.save(existingProduct);
+    }
+
+    /**
+     * Finds a product by its ID.
+     *
+     * @param id The product ID
+     * @return An Optional containing the product if found
+     */
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    /**
+     * Finds a product by its barcode.
+     *
+     * @param barcode The barcode
+     * @return An Optional containing the product if found
      */
     public Optional<Product> findByBarcode(String barcode) {
         return productRepository.findByBarcode(barcode);
     }
 
     /**
-     * Obtiene todos los productos activos
+     * Gets all products.
+     *
+     * @return List of all products
      */
-    public List<Product> getAllActiveProducts() {
-        return productRepository.findByActiveTrue();
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
     /**
-     * Guarda un producto nuevo o actualiza uno existente
+     * Gets a page of products.
+     *
+     * @param page The page number (zero-based)
+     * @param size The page size
+     * @param sortBy The field to sort by
+     * @param ascending Whether to sort in ascending order
+     * @return A Page of products
+     */
+    public Page<Product> findAllPaginated(int page, int size, String sortBy, boolean ascending) {
+        Sort sort = Sort.by(ascending ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return productRepository.findAll(pageable);
+    }
+
+    /**
+     * Searches for products by name or barcode.
+     *
+     * @param searchTerm The search term
+     * @param page The page number (zero-based)
+     * @param size The page size
+     * @return A Page of products
+     */
+    public Page<Product> searchProducts(String searchTerm, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.searchByNameOrBarcode(searchTerm, pageable);
+    }
+
+    /**
+     * Deletes a product by its ID.
+     *
+     * @param id The product ID
      */
     @Transactional
-    public Product saveProduct(Product product) {
-        // Validar que el código de barras y SKU sean únicos si es un nuevo producto
-        if (product.getId() == null) {
-            validateUniqueBarcode(product.getBarcode());
-            validateUniqueSku(product.getSku());
-        } else {
-            // Si es una actualización, verificar que no existe otro producto con el mismo barcode/sku
-            Optional<Product> existingWithBarcode = productRepository.findByBarcode(product.getBarcode());
-            if (existingWithBarcode.isPresent() && !existingWithBarcode.get().getId().equals(product.getId())) {
-                throw new IllegalArgumentException("Ya existe otro producto con el código de barras: " + product.getBarcode());
-            }
-
-            Optional<Product> existingWithSku = productRepository.findBySku(product.getSku());
-            if (existingWithSku.isPresent() && !existingWithSku.get().getId().equals(product.getId())) {
-                throw new IllegalArgumentException("Ya existe otro producto con el SKU: " + product.getSku());
-            }
-        }
-
-        return productRepository.save(product);
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
     }
 
     /**
-     * Busca productos por nombre (búsqueda parcial)
-     */
-    public List<Product> searchProductsByName(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name);
-    }
-
-    /**
-     * Obtiene productos con stock bajo
-     */
-    public List<Product> getLowStockProducts(int threshold) {
-        return productRepository.findLowStockProducts(threshold);
-    }
-
-    /**
-     * Desactiva un producto (eliminación suave)
+     * Updates the stock of a product.
+     *
+     * @param id The product ID
+     * @param quantity The quantity to add (positive) or remove (negative)
+     * @return The updated product
+     * @throws IllegalArgumentException If the product is not found or if removing would result in negative stock
      */
     @Transactional
-    public void deactivateProduct(Long productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productId));
+    public Product updateStock(Long id, int quantity) {
+        // Get existing product
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado: " + id));
 
-        product.setActive(false);
-        productRepository.save(product);
-    }
+        // Calculate new stock
+        int newStock = product.getStock() + quantity;
 
-    /**
-     * Actualiza el stock de un producto
-     */
-    @Transactional
-    public Product updateStock(Long productId, int newStock) {
+        // Check if new stock would be negative
         if (newStock < 0) {
-            throw new IllegalArgumentException("El stock no puede ser negativo");
+            throw new IllegalArgumentException("El stock no puede ser negativo. Stock actual: " +
+                    product.getStock() + ", Cantidad a restar: " + Math.abs(quantity));
         }
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productId));
-
+        // Update stock
         product.setStock(newStock);
+
+        // Save updated product
         return productRepository.save(product);
     }
 
     /**
-     * Valida que el código de barras sea único
+     * Finds products with low stock.
+     *
+     * @param threshold The low stock threshold
+     * @param page The page number (zero-based)
+     * @param size The page size
+     * @return A Page of products with stock at or below the threshold
      */
-    private void validateUniqueBarcode(String barcode) {
-        if (productRepository.findByBarcode(barcode).isPresent()) {
-            throw new IllegalArgumentException("Ya existe un producto con el código de barras: " + barcode);
-        }
-    }
-
-    /**
-     * Valida que el SKU sea único
-     */
-    private void validateUniqueSku(String sku) {
-        if (productRepository.findBySku(sku).isPresent()) {
-            throw new IllegalArgumentException("Ya existe un producto con el SKU: " + sku);
-        }
+    public Page<Product> findLowStockProducts(int threshold, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findByStockLessThanEqual(threshold, pageable);
     }
 }

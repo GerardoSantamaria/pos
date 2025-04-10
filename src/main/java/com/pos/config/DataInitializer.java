@@ -1,130 +1,141 @@
 package com.pos.config;
 
-import com.pos.models.Category;
-import com.pos.models.Product;
+import com.pos.models.Role;
 import com.pos.models.User;
-import com.pos.repositories.CategoryRepository;
-import com.pos.repositories.ProductRepository;
+import com.pos.models.Product;
+import com.pos.repositories.RoleRepository;
 import com.pos.repositories.UserRepository;
-import jakarta.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
+import com.pos.repositories.ProductRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Component to initialize the database with sample data.
+ */
 @Component
-@Profile("dev")  // Solo se ejecuta en perfil de desarrollo
-public class DataInitializer {
+public class DataInitializer implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
-
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor con inyección de dependencias en lugar de @RequiredArgsConstructor
-    public DataInitializer(UserRepository userRepository, CategoryRepository categoryRepository,
-                           ProductRepository productRepository, PasswordEncoder passwordEncoder) {
+    /**
+     * Constructor with dependencies.
+     *
+     * @param roleRepository The role repository
+     * @param userRepository The user repository
+     * @param productRepository The product repository
+     * @param passwordEncoder The password encoder
+     */
+    public DataInitializer(
+            RoleRepository roleRepository,
+            UserRepository userRepository,
+            ProductRepository productRepository,
+            PasswordEncoder passwordEncoder) {
+        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostConstruct
+    /**
+     * Initializes the database with roles, users, and sample products.
+     *
+     * @param args Command line arguments
+     */
+    @Override
     @Transactional
-    public void initData() {
-        if (userRepository.count() > 0) {
-            log.info("La base de datos ya está inicializada, saltando inicialización");
+    public void run(String... args) {
+        // Only initialize if data doesn't exist
+        if (roleRepository.count() > 0) {
             return;
         }
 
-        log.info("Inicializando datos de demostración...");
-        initUsers();
-        initCategoriesAndProducts();
-        log.info("Datos de demostración inicializados correctamente");
+        // Create roles
+        Role adminRole = createRole("ROLE_ADMIN");
+        Role vendorRole = createRole("ROLE_VENDEDOR");
+
+        // Create admin user
+        createUserWithRoles("admin", "admin", true, adminRole);
+
+        // Create vendor user
+        createUserWithRoles("vendedor", "vendedor", true, vendorRole);
+
+        // Create sample products
+        createSampleProducts();
     }
 
-    private void initUsers() {
-        // Crear usuarios de demostración
-        User admin = new User();
-        admin.setUsername("admin");
-        admin.setPassword(passwordEncoder.encode("admin"));
-        admin.setFullName("Administrador");
-        admin.setRoles(Set.of("ADMIN", "CASHIER"));
-        admin.setActive(true);
-        userRepository.save(admin);
-
-        User cashier = new User();
-        cashier.setUsername("cajero");
-        cashier.setPassword(passwordEncoder.encode("cajero"));
-        cashier.setFullName("Cajero Demo");
-        cashier.setRoles(Set.of("CASHIER"));
-        cashier.setActive(true);
-        userRepository.save(cashier);
-
-        log.info("Usuarios creados: {}", userRepository.count());
+    /**
+     * Creates a role.
+     *
+     * @param name The role name
+     * @return The created role
+     */
+    private Role createRole(String name) {
+        Role role = new Role(name);
+        return roleRepository.save(role);
     }
 
-    private void initCategoriesAndProducts() {
-        // Crear categorías
-        Category beverages = new Category();
-        beverages.setName("Bebidas");
-        beverages.setDescription("Refrescos, agua, jugos y bebidas alcohólicas");
-        categoryRepository.save(beverages);
+    /**
+     * Creates a user with the specified roles.
+     *
+     * @param username The username
+     * @param password The password
+     * @param enabled Whether the user is enabled
+     * @param roles The roles to assign
+     * @return The created user
+     */
+    private User createUserWithRoles(String username, String password, boolean enabled, Role... roles) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setEnabled(enabled);
 
-        Category snacks = new Category();
-        snacks.setName("Botanas");
-        snacks.setDescription("Frituras, galletas, dulces y snacks varios");
-        categoryRepository.save(snacks);
+        Set<Role> roleSet = new HashSet<>();
+        for (Role role : roles) {
+            roleSet.add(role);
+        }
+        user.setRoles(roleSet);
 
-        Category dairy = new Category();
-        dairy.setName("Lácteos");
-        dairy.setDescription("Leche, queso, yogurt y derivados lácteos");
-        categoryRepository.save(dairy);
-
-        Category groceries = new Category();
-        groceries.setName("Abarrotes");
-        groceries.setDescription("Productos básicos y alimentos no perecederos");
-        categoryRepository.save(groceries);
-
-        // Crear productos de ejemplo
-        createProduct("7501055304172", "COCA001", "Coca-Cola 600ml", "Refresco Coca-Cola 600ml", new BigDecimal("18.50"), 50, beverages);
-        createProduct("7501055304189", "COCA002", "Coca-Cola 1L", "Refresco Coca-Cola 1 litro", new BigDecimal("24.00"), 40, beverages);
-        createProduct("7501055304196", "COCA003", "Coca-Cola 2L", "Refresco Coca-Cola 2 litros", new BigDecimal("32.50"), 30, beverages);
-
-        createProduct("7501000611690", "SABN001", "Sabritas Naturales 45g", "Papas fritas Sabritas Naturales 45g", new BigDecimal("15.00"), 60, snacks);
-        createProduct("7501000611706", "SABN002", "Sabritas Adobadas 45g", "Papas fritas Sabritas Adobadas 45g", new BigDecimal("15.00"), 55, snacks);
-        createProduct("7501000611713", "DORITOS01", "Doritos Nacho 58g", "Botana Doritos Nacho 58g", new BigDecimal("17.50"), 45, snacks);
-
-        createProduct("7501055910014", "LECHE001", "Leche Alpura Entera 1L", "Leche entera ultrapasteurizada Alpura 1 litro", new BigDecimal("25.50"), 35, dairy);
-        createProduct("7501055910021", "LECHE002", "Leche Alpura Light 1L", "Leche light ultrapasteurizada Alpura 1 litro", new BigDecimal("26.50"), 30, dairy);
-
-        createProduct("7501003340019", "MASC001", "Maseca 1Kg", "Harina de maíz Maseca 1Kg", new BigDecimal("20.50"), 40, groceries);
-        createProduct("7501000120057", "AZUC001", "Azúcar Estándar 1Kg", "Azúcar estándar 1Kg", new BigDecimal("32.00"), 25, groceries);
-
-        log.info("Categorías creadas: {}", categoryRepository.count());
-        log.info("Productos creados: {}", productRepository.count());
+        return userRepository.save(user);
     }
 
-    private void createProduct(String barcode, String sku, String name, String description,
-                               BigDecimal price, Integer stock, Category category) {
-        Product product = new Product();
-        product.setBarcode(barcode);
-        product.setSku(sku);
-        product.setName(name);
-        product.setDescription(description);
-        product.setPrice(price);
-        product.setStock(stock);
-        product.setCategory(category);
-        product.setActive(true);
+    /**
+     * Creates sample products.
+     */
+    private void createSampleProducts() {
+        // Create sample products
+        createProduct("1234567890123", "Laptop HP ProBook", "Laptop de alta gama para uso profesional", new BigDecimal("999.99"), 10);
+        createProduct("2345678901234", "Monitor LG 24\"", "Monitor LED Full HD", new BigDecimal("199.99"), 15);
+        createProduct("3456789012345", "Teclado Mecánico Logitech", "Teclado mecánico con retroiluminación RGB", new BigDecimal("89.99"), 20);
+        createProduct("4567890123456", "Mouse Inalámbrico", "Mouse ergonómico inalámbrico", new BigDecimal("29.99"), 30);
+        createProduct("5678901234567", "Disco Duro SSD 1TB", "Disco de estado sólido de alta velocidad", new BigDecimal("149.99"), 25);
+        createProduct("6789012345678", "Memoria RAM 16GB", "Memoria RAM DDR4 de alta velocidad", new BigDecimal("79.99"), 40);
+        createProduct("7890123456789", "Impresora HP LaserJet", "Impresora láser monocromática", new BigDecimal("249.99"), 8);
+        createProduct("8901234567890", "Router WiFi", "Router de doble banda con alta cobertura", new BigDecimal("59.99"), 12);
+        createProduct("9012345678901", "Cámara Web HD", "Cámara web con micrófono integrado", new BigDecimal("39.99"), 18);
+        createProduct("0123456789012", "Altavoces Bluetooth", "Altavoces inalámbricos con excelente calidad de sonido", new BigDecimal("69.99"), 15);
+    }
 
-        productRepository.save(product);
+    /**
+     * Creates a product.
+     *
+     * @param barcode The barcode
+     * @param name The product name
+     * @param description The product description
+     * @param price The product price
+     * @param stock The initial stock
+     * @return The created product
+     */
+    private Product createProduct(String barcode, String name, String description, BigDecimal price, Integer stock) {
+        Product product = new Product(barcode, name, description, price, stock);
+        return productRepository.save(product);
     }
 }

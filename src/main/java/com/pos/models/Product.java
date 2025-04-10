@@ -1,11 +1,12 @@
 package com.pos.models;
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
+/**
+ * Entity representing a product in the inventory.
+ */
 @Entity
 @Table(name = "products")
 public class Product {
@@ -14,74 +15,64 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "El código de barras es obligatorio")
+    private String barcode;
+
     @Column(nullable = false)
+    @NotBlank(message = "El nombre del producto es obligatorio")
     private String name;
 
     @Column(length = 1000)
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false)
+    @NotNull(message = "El precio es obligatorio")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que cero")
     private BigDecimal price;
 
     @Column(nullable = false)
+    @Min(value = 0, message = "El stock no puede ser negativo")
     private Integer stock;
 
-    @Column(nullable = false, unique = true)
-    private String barcode;
-
-    @Column(nullable = false)
-    private String sku;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    private boolean active = true;
-
-    // Imagen del producto (ruta relativa o URL)
-    private String imageUrl;
-
-    // Constructores
+    /**
+     * Default constructor.
+     */
     public Product() {
     }
 
-    public Product(String name, String description, BigDecimal price, Integer stock,
-                   String barcode, String sku, Category category) {
+    /**
+     * Parameterized constructor.
+     *
+     * @param barcode     The product barcode
+     * @param name        The product name
+     * @param description The product description
+     * @param price       The product price
+     * @param stock       The current stock
+     */
+    public Product(String barcode, String name, String description, BigDecimal price, Integer stock) {
+        this.barcode = barcode;
         this.name = name;
         this.description = description;
         this.price = price;
         this.stock = stock;
-        this.barcode = barcode;
-        this.sku = sku;
-        this.category = category;
-        this.active = true;
     }
 
-    // Métodos de ciclo de vida
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
-    // Getters y Setters
+    // Getters and Setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 
     public String getName() {
@@ -116,84 +107,12 @@ public class Product {
         this.stock = stock;
     }
 
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    // equals y hashCode
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(id, product.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    // toString
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", barcode='" + barcode + '\'' +
-                ", sku='" + sku + '\'' +
+                ", name='" + name + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
                 '}';

@@ -1,0 +1,53 @@
+# Spring Boot Configuration
+spring:
+  application:
+    name: pos-system
+
+  # Database Configuration
+  datasource:
+    url: jdbc:h2:file:./posdb;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+
+  # JPA/Hibernate Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # H2 Console Configuration (for development)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+
+# Application Configuration
+app:
+  # Security settings
+  security:
+    # Password encoding strength
+    bcrypt-strength: 10
+    # JWT configuration (for future implementation)
+    jwt:
+      secret: ChangeThisToASecureSecretKeyInProduction
+      expiration: 86400000 # 24 hours
+
+  # UI Configuration
+  ui:
+    theme: light # Default theme (light, dark, blue)
+    animation-speed: 300 # Animation speed in milliseconds
+    page-size: 20 # Default page size for tables
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.pos: DEBUG
+    org.springframework.security: INFO

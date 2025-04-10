@@ -1,35 +1,51 @@
 package com.pos.services;
 
 import com.pos.models.User;
+import com.pos.models.Role;
 import com.pos.repositories.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.pos.repositories.RoleRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Service for managing User entities.
+ * Implements UserDetailsService for Spring Security integration.
+ */
 @Service
 public class UserService implements UserDetailsService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
-
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor con inyección de dependencias en lugar de @RequiredArgsConstructor
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    /**
+     * Constructor with dependencies.
+     *
+     * @param userRepository The user repository
+     * @param roleRepository The role repository
+     * @param passwordEncoder The password encoder
+     */
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Loads user details by username for authentication.
+     *
+     * @param username The username
+     * @return The UserDetails
+     * @throws UsernameNotFoundException If the user is not found
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
@@ -37,72 +53,106 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Obtiene el usuario actualmente autenticado
+     * Creates a new user with the provided details.
+     *
+     * @param user The user to create
+     * @param roleNames The roles to assign
+     * @return The created user
      */
-    public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @Transactional
+    public User createUser(User user, String... roleNames) {
+        // Encode password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if (authentication == null ||
-            !authentication.isAuthenticated() ||
-            "anonymousUser".equals(authentication.getPrincipal())) {
-            return null;
+        // Assign roles
+        Set<Role> roles = new HashSet<>();
+        for (String roleName : roleNames) {
+            Role role = roleRepository.findByName(roleName)
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no encontrado: " + roleName));
+            roles.add(role);
         }
+        user.setRoles(roles);
 
-        String username = authentication.getName();
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+        // Save user
+        return userRepository.save(user);
     }
 
     /**
-     * Obtiene todos los usuarios
+     * Updates an existing user.
+     *
+     * @param user The user to update
+     * @return The updated user
      */
-    public List<User> getAllUsers() {
+    @Transactional
+    public User updateUser(User user) {
+        // Get existing user
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado: " + user.getId()));
+
+        // Update fields
+        existingUser.setUsername(user.getUsername());
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        existingUser.setEnabled(user.isEnabled());
+
+        // Save updated user
+        return userRepository.save(existingUser);
+    }
+
+    /**
+     * Finds a user by their ID.
+     *
+     * @param id The user ID
+     * @return An Optional containing the user if found
+     */
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    /**
+     * Finds a user by their username.
+     *
+     * @param username The username
+     * @return An Optional containing the user if found
+     */
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    /**
+     * Gets all users.
+     *
+     * @return List of all users
+     */
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
     /**
-     * Crea un nuevo usuario
+     * Deletes a user by their ID.
+     *
+     * @param id The user ID
      */
     @Transactional
-    public User createUser(String username, String password, String fullName, Set<String> roles) {
-        if (userRepository.existsByUsername(username)) {
-            throw new IllegalArgumentException("El nombre de usuario ya existe: " + username);
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    /**
+     * Authenticates a user with the provided credentials.
+     *
+     * @param username The username
+     * @param password The raw password
+     * @return True if authentication succeeds, false otherwise
+     */
+    public boolean authenticate(String username, String password) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            return false;
         }
 
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setFullName(fullName);
-        user.setRoles(roles);
-        user.setActive(true);
-
-        return userRepository.save(user);
-    }
-
-    /**
-     * Actualiza un usuario existente
-     */
-    @Transactional
-    public User updateUser(Long userId, String fullName, Set<String> roles, boolean active) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + userId));
-
-        user.setFullName(fullName);
-        user.setRoles(roles);
-        user.setActive(active);
-
-        return userRepository.save(user);
-    }
-
-    /**
-     * Cambia la contraseña de un usuario
-     */
-    @Transactional
-    public void changePassword(Long userId, String newPassword) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + userId));
-
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+        User user = userOpt.get();
+        return user.isEnabled() && passwordEncoder.matches(password, user.getPassword());
     }
 }

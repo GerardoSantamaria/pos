@@ -1,33 +1,50 @@
 package com.pos.repositories;
 
-import com.pos.models.Category;
 import com.pos.models.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
-@Repository
+/**
+ * Repository for accessing and manipulating Product entities.
+ */
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    // Buscar producto por código de barras (para el escáner)
+    /**
+     * Finds a product by its barcode.
+     *
+     * @param barcode The barcode to search for
+     * @return An Optional containing the product if found
+     */
     Optional<Product> findByBarcode(String barcode);
 
-    // Buscar por SKU
-    Optional<Product> findBySku(String sku);
+    /**
+     * Checks if a product with the given barcode exists.
+     *
+     * @param barcode The barcode to check
+     * @return True if a product with the barcode exists, false otherwise
+     */
+    boolean existsByBarcode(String barcode);
 
-    // Buscar productos por nombre (parcial)
-    List<Product> findByNameContainingIgnoreCase(String name);
+    /**
+     * Searches for products that match the given search term in name or barcode.
+     *
+     * @param searchTerm The search term
+     * @param pageable The pagination information
+     * @return A Page of Product entities
+     */
+    @Query("SELECT p FROM Product p WHERE p.name LIKE %:searchTerm% OR p.barcode LIKE %:searchTerm%")
+    Page<Product> searchByNameOrBarcode(@Param("searchTerm") String searchTerm, Pageable pageable);
 
-    // Buscar productos por categoría
-    List<Product> findByCategory(Category category);
-
-    // Productos con stock bajo
-    @Query("SELECT p FROM Product p WHERE p.stock <= :threshold AND p.active = true")
-    List<Product> findLowStockProducts(int threshold);
-
-    // Productos activos
-    List<Product> findByActiveTrue();
+    /**
+     * Finds products with stock less than or equal to the specified threshold.
+     *
+     * @param threshold The stock threshold
+     * @param pageable The pagination information
+     * @return A Page of Product entities
+     */
+    Page<Product> findByStockLessThanEqual(Integer threshold, Pageable pageable);
 }
