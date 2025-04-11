@@ -81,3 +81,6 @@ Desktop.ini
 *.tmp
 *.bak
 *.swp
+
+# H2 db
+*.db
