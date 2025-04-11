@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.ProductListController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.ProductListController">
     <top>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <children>
@@ -25,21 +25,18 @@
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                     <children>
                         <TextField fx:id="searchField" prefHeight="30.0" prefWidth="250.0" promptText="Buscar por nombre o código..." HBox.hgrow="ALWAYS" />
-                        <Button fx:id="searchButton" mnemonicParsing="false" styleClass="search-button" text="Buscar" />
-                        <HBox spacing="5.0" HBox.hgrow="ALWAYS">
-                            <children>
-                                <Label text="Ordenar por:" />
-                                <ComboBox fx:id="sortByComboBox" prefWidth="100.0" />
-                                <ComboBox fx:id="sortDirectionComboBox" prefWidth="120.0" />
-                            </children>
-                            <HBox.margin>
-                                <Insets left="10.0" />
-                            </HBox.margin>
-                        </HBox>
+                        <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" styleClass="search-button" text="Buscar" />
                         <Button fx:id="refreshButton" mnemonicParsing="false" styleClass="refresh-button" text="Actualizar" />
                         <Button fx:id="addButton" mnemonicParsing="false" styleClass="add-button" text="Nuevo Producto" />
                     </children>
                 </HBox>
+                  <HBox spacing="5.0">
+                      <children>
+                          <Label text="Ordenar por:" />
+                          <ComboBox fx:id="sortByComboBox" prefWidth="100.0" />
+                          <ComboBox fx:id="sortDirectionComboBox" prefWidth="120.0" />
+                      </children>
+                  </HBox>
             </children>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
@@ -51,8 +48,8 @@
             <columns>
                 <TableColumn fx:id="idColumn" maxWidth="80.0" minWidth="50.0" prefWidth="50.0" text="ID" />
                 <TableColumn fx:id="barcodeColumn" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="120.0" text="Código de Barras" />
-                <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="200.0" text="Nombre" />
-                <TableColumn fx:id="priceColumn" maxWidth="150.0" minWidth="80.0" prefWidth="100.0" text="Precio" />
+                <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="203.0" text="Nombre" />
+                <TableColumn fx:id="priceColumn" maxWidth="150.0" minWidth="80.0" prefWidth="122.0" text="Precio" />
                 <TableColumn fx:id="stockColumn" maxWidth="100.0" minWidth="60.0" prefWidth="80.0" text="Stock" />
                 <TableColumn fx:id="actionsColumn" maxWidth="200.0" minWidth="120.0" prefWidth="150.0" text="Acciones" />
             </columns>

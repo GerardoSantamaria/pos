@@ -1,5 +1,6 @@
 package com.pos.controllers;
 
+import atlantafx.base.theme.Styles;
 import com.pos.config.StageManager;
 import com.pos.config.ViewConfiguration;
 import com.pos.models.Product;
@@ -288,14 +289,14 @@ public class ProductListController implements Initializable {
 
             {
                 // Configure edit button
-                editButton.getStyleClass().add("edit-button");
+                editButton.getStyleClass().add(Styles.WARNING);
                 editButton.setOnAction(event -> {
                     Product product = getTableView().getItems().get(getIndex());
                     openProductForm(product);
                 });
 
                 // Configure delete button
-                deleteButton.getStyleClass().add("delete-button");
+                deleteButton.getStyleClass().add(Styles.DANGER);
                 deleteButton.setOnAction(event -> {
                     Product product = getTableView().getItems().get(getIndex());
                     deleteProduct(product);

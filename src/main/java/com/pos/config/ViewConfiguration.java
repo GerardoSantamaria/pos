@@ -6,6 +6,11 @@ package com.pos.config;
 public class ViewConfiguration {
 
     /**
+     * Path css basic
+     */
+    public static final String CSS_default = "/static/css/primer-light.css";
+    //public static final String CSS_default = "/static/css/light-theme.css";
+    /**
      * Path to the login view FXML.
      */
     public static final String LOGIN_VIEW = "/templates/login.fxml";

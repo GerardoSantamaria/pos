@@ -1,9 +1,12 @@
 package com.pos.config;
 
+
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Optional;
+
+import static com.pos.util.ResourcePathChecker.getExistingResources;
 
 /**
  * Manages the JavaFX stages and scenes.
@@ -51,6 +56,31 @@ public class StageManager {
      */
     public void switchScene(String viewName) {
         try {
+            // Debug: Check if the resource exists
+            boolean resourceExists = com.pos.util.ResourcePathChecker.resourceExists(viewName);
+            if (!resourceExists) {
+                System.err.println("!!! ERROR: FXML resource not found: " + viewName);
+                System.err.println("Checking alternate paths...");
+
+                // Try to find the resource with alternate paths
+                String[] alternatePaths = {
+                        viewName.replace("/product/", "/"),
+                        viewName.replace("/product/", "-"),
+                        viewName.replace("/product/", "/product-"),
+                        viewName
+                };
+                com.pos.util.ResourcePathChecker.printResourceDebugInfo("FXML", alternatePaths);
+
+                // If we can't find the resource, throw an exception
+                if (!getExistingResources(alternatePaths).isEmpty()) {
+                    String foundPath = getExistingResources(alternatePaths).get(0);
+                    System.out.println("Found alternative path: " + foundPath);
+                    viewName = foundPath;
+                } else {
+                    throw new IOException("Resource not found: " + viewName);
+                }
+            }
+
             // Load the FXML file
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(viewName));
 
@@ -114,10 +144,15 @@ public class StageManager {
      * @param scene The scene to apply the theme to
      */
     private void applyTheme(Scene scene) {
-        // Load CSS theme
-        // For now, we're using a default light theme
-        scene.getStylesheets().add(Objects.requireNonNull(
-                getClass().getResource("/static/css/light-theme.css")).toExternalForm());
+        try {
+            // Load CSS theme
+            String cssPath = ViewConfiguration.CSS_default;
+            String cssResource = getClass().getResource(cssPath).toExternalForm();
+            scene.getStylesheets().add(cssResource);
+        } catch (Exception e) {
+            System.err.println("Error loading theme: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -127,7 +162,7 @@ public class StageManager {
      * @param message The error message
      */
     public void showErrorDialog(String title, String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
@@ -143,13 +178,14 @@ public class StageManager {
      * @return True if confirmed, false otherwise
      */
     public boolean showConfirmationDialog(String title, String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.initOwner(primaryStage);
 
-        return alert.showAndWait().orElse(javafx.scene.control.ButtonType.CANCEL) == javafx.scene.control.ButtonType.OK;
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     /**
@@ -159,7 +195,7 @@ public class StageManager {
      * @param message The information message
      */
     public void showInfoDialog(String title, String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

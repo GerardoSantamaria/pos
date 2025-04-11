@@ -8,51 +8,46 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import atlantafx.base.controls.Card?>
 
-<AnchorPane fx:id="rootPane" prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.LoginController">
+<AnchorPane fx:id="rootPane" prefHeight="450.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.LoginController">
     <children>
-        <Card layoutX="150.0" layoutY="75.0" prefHeight="250.0" prefWidth="300.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0">
-            <body>
-                <VBox alignment="CENTER" spacing="15.0">
-                    <children>
-                        <Label text="Sistema POS" textAlignment="CENTER">
-                            <font>
-                                <Font name="System Bold" size="24.0" />
-                            </font>
-                        </Label>
-                        <Label text="Iniciar Sesión" textAlignment="CENTER">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <TextField fx:id="usernameField" promptText="Usuario">
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" top="10.0" />
-                            </VBox.margin>
-                        </TextField>
-                        <PasswordField fx:id="passwordField" promptText="Contraseña">
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" />
-                            </VBox.margin>
-                        </PasswordField>
-                        <Label fx:id="errorLabel" styleClass="error-label" textFill="RED">
-                            <VBox.margin>
-                                <Insets left="20.0" right="20.0" />
-                            </VBox.margin>
-                        </Label>
-                        <Button fx:id="loginButton" defaultButton="true" onAction="#handleLogin" prefWidth="150.0" styleClass="primary-button" text="Iniciar Sesión">
-                            <VBox.margin>
-                                <Insets top="10.0" />
-                            </VBox.margin>
-                        </Button>
-                    </children>
-                    <padding>
-                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-                    </padding>
-                </VBox>
-            </body>
-        </Card>
-        <Label layoutX="14.0" layoutY="369.0" text="© 2025 Sistema POS v1.0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
+        <VBox alignment="CENTER" layoutX="150.0" layoutY="75.0" prefHeight="250.0" prefWidth="300.0" spacing="15.0" styleClass="login-card" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0">
+            <children>
+                <Label text="Sistema POS" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label text="Iniciar Sesión" textAlignment="CENTER">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="usernameField" promptText="Usuario">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="10.0" />
+                    </VBox.margin>
+                </TextField>
+                <PasswordField fx:id="passwordField" promptText="Contraseña">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </PasswordField>
+                <Label fx:id="errorLabel" styleClass="error-label" textFill="RED">
+                    <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                    </VBox.margin>
+                </Label>
+                <Button fx:id="loginButton" defaultButton="true" onAction="#handleLogin" prefWidth="150.0" styleClass="primary-button" text="Iniciar Sesión">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+            </padding>
+        </VBox>
+        <Label layoutX="14.0" layoutY="369.0" text="© 2025 Sistema POS v0.0.1" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" />
     </children>
 </AnchorPane>
