@@ -1,6 +1,8 @@
-package com.pos.config;
+package com.pos.manager;
 
 
+import atlantafx.base.theme.PrimerLight;
+import com.pos.config.ViewConfiguration;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +28,7 @@ import static com.pos.util.ResourcePathChecker.getExistingResources;
 public class StageManager {
 
     private final ApplicationContext applicationContext;
+    private final CssManager cssManager;
     private Stage primaryStage;
 
     @Value("${app.ui.animation-speed:300}")
@@ -36,8 +39,10 @@ public class StageManager {
      *
      * @param applicationContext The Spring application context
      */
-    public StageManager(ApplicationContext applicationContext) {
+    public StageManager(ApplicationContext applicationContext,
+                        CssManager cssManager) {
         this.applicationContext = applicationContext;
+        this.cssManager = cssManager;
     }
 
     /**
@@ -94,7 +99,7 @@ public class StageManager {
             Scene scene = new Scene(root);
 
             // Apply CSS theme
-            applyTheme(scene);
+            //applyTheme(scene);
 
             // Set the scene on the stage
             if (primaryStage.getScene() == null) {
@@ -146,9 +151,9 @@ public class StageManager {
     private void applyTheme(Scene scene) {
         try {
             // Load CSS theme
-            String cssPath = ViewConfiguration.CSS_default;
-            String cssResource = getClass().getResource(cssPath).toExternalForm();
-            scene.getStylesheets().add(cssResource);
+            //String cssPath = ViewConfiguration.CSS_default;
+            //String cssResource = getClass().getResource(cssPath).toExternalForm();
+            scene.getStylesheets().add(this.cssManager.getCurrentTheme());
         } catch (Exception e) {
             System.err.println("Error loading theme: " + e.getMessage());
             e.printStackTrace();

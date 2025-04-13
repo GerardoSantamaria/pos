@@ -34,6 +34,9 @@ public class ProductFormController implements Initializable {
     private TextField priceField;
 
     @FXML
+    private TextField costField;
+
+    @FXML
     private TextField stockField;
 
     @FXML
@@ -79,6 +82,12 @@ public class ProductFormController implements Initializable {
             }
         });
 
+        costField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                costField.setText(oldValue);
+            }
+        });
+
         // Set up numeric validation for stock field
         stockField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -108,6 +117,7 @@ public class ProductFormController implements Initializable {
             nameField.setText(product.getName());
             descriptionArea.setText(product.getDescription());
             priceField.setText(product.getPrice().toString());
+            costField.setText(product.getCost().toString());
             stockField.setText(product.getStock().toString());
         } else {
             // Creating new product
@@ -118,6 +128,7 @@ public class ProductFormController implements Initializable {
             nameField.clear();
             descriptionArea.clear();
             priceField.clear();
+            costField.clear();
             stockField.clear();
         }
     }
@@ -180,6 +191,7 @@ public class ProductFormController implements Initializable {
         product.setName(nameField.getText().trim());
         product.setDescription(descriptionArea.getText().trim());
         product.setPrice(new BigDecimal(priceField.getText().trim()));
+        product.setCost(new BigDecimal(costField.getText().trim()));
         product.setStock(Integer.parseInt(stockField.getText().trim()));
     }
 
@@ -217,6 +229,20 @@ public class ProductFormController implements Initializable {
         } catch (NumberFormatException e) {
             errorLabel.setText("El precio debe ser un número válido");
             priceField.requestFocus();
+            return false;
+        }
+
+        // Validate cost
+        try {
+            BigDecimal price = new BigDecimal(costField.getText().trim());
+            if (price.compareTo(BigDecimal.ZERO) <= 0) {
+                errorLabel.setText("El costo debe ser mayor que cero");
+                costField.requestFocus();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            errorLabel.setText("El costo debe ser un número válido");
+            costField.requestFocus();
             return false;
         }
 

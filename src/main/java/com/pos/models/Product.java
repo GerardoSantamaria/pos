@@ -3,6 +3,8 @@ package com.pos.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Entity representing a product in the inventory.
@@ -27,38 +29,45 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    @NotNull(message = "El precio es obligatorio")
-    @DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que cero")
-    private BigDecimal price;
+    @NotNull(message = "Debe inidicar si esta activo o no el producto")
+    private boolean active;
 
-    @Column(nullable = false)
-    @Min(value = 0, message = "El stock no puede ser negativo")
-    private Integer stock;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Price price;
+
+    @Column
+    @NotNull(message = "Debe indicar la fecha de creacion del producto")
+    private Timestamp creationDate;
+
 
     /**
      * Default constructor.
      */
     public Product() {
+        this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
-    /**
-     * Parameterized constructor.
-     *
-     * @param barcode     The product barcode
-     * @param name        The product name
-     * @param description The product description
-     * @param price       The product price
-     * @param stock       The current stock
-     */
-    public Product(String barcode, String name, String description, BigDecimal price, Integer stock) {
+    
+    public Product(String barcode,
+                   String name,
+                   String description,
+                   Price price,
+                   boolean active,
+                   Category category) {
         this.barcode = barcode;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.stock = stock;
+        this.active = active;
+        this.category = category;
+        this.creationDate = new Timestamp(System.currentTimeMillis());
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -91,20 +100,36 @@ public class Product {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Price getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Price price) {
         this.price = price;
     }
 
-    public Integer getStock() {
-        return stock;
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
     }
 
     @Override
@@ -113,8 +138,7 @@ public class Product {
                 "id=" + id +
                 ", barcode='" + barcode + '\'' +
                 ", name='" + name + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
+                ", isActive='" + active + '\'' +
                 '}';
     }
 }

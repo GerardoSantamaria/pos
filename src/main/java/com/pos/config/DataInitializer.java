@@ -1,17 +1,15 @@
 package com.pos.config;
 
-import com.pos.models.Role;
-import com.pos.models.User;
-import com.pos.models.Product;
-import com.pos.repositories.RoleRepository;
-import com.pos.repositories.UserRepository;
-import com.pos.repositories.ProductRepository;
+import com.pos.models.*;
+import com.pos.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.annotation.Target;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +23,9 @@ public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TaxRepository taxRepository;
+    private final PriceRepository priceRepository;
+    private final CategoryRepository categoryRepository;
 
     /**
      * Constructor with dependencies.
@@ -38,11 +39,14 @@ public class DataInitializer implements CommandLineRunner {
             RoleRepository roleRepository,
             UserRepository userRepository,
             ProductRepository productRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder, TaxRepository taxRepository, PriceRepository priceRepository, CategoryRepository categoryRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.passwordEncoder = passwordEncoder;
+        this.taxRepository = taxRepository;
+        this.priceRepository = priceRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -111,17 +115,29 @@ public class DataInitializer implements CommandLineRunner {
      * Creates sample products.
      */
     private void createSampleProducts() {
+        Tax tax = new Tax();
+        tax.setName("IVA");
+        tax.setPercentage(new BigDecimal("21"));
+        tax = taxRepository.save(tax);
+
+
+        Category c1 = new Category("Electronica 1", null, true);
+        Category c2 = new Category("Electronica 2", null, true);
+        c1 = categoryRepository.save(c1);
+        c2 = categoryRepository.save(c2);
+
+
         // Create sample products
-        createProduct("1234567890123", "Laptop HP ProBook", "Laptop de alta gama para uso profesional", new BigDecimal("999.99"), 10);
-        createProduct("2345678901234", "Monitor LG 24\"", "Monitor LED Full HD", new BigDecimal("199.99"), 15);
-        createProduct("3456789012345", "Teclado Mecánico Logitech", "Teclado mecánico con retroiluminación RGB", new BigDecimal("89.99"), 20);
-        createProduct("4567890123456", "Mouse Inalámbrico", "Mouse ergonómico inalámbrico", new BigDecimal("29.99"), 30);
-        createProduct("5678901234567", "Disco Duro SSD 1TB", "Disco de estado sólido de alta velocidad", new BigDecimal("149.99"), 25);
-        createProduct("6789012345678", "Memoria RAM 16GB", "Memoria RAM DDR4 de alta velocidad", new BigDecimal("79.99"), 40);
-        createProduct("7890123456789", "Impresora HP LaserJet", "Impresora láser monocromática", new BigDecimal("249.99"), 8);
-        createProduct("8901234567890", "Router WiFi", "Router de doble banda con alta cobertura", new BigDecimal("59.99"), 12);
-        createProduct("9012345678901", "Cámara Web HD", "Cámara web con micrófono integrado", new BigDecimal("39.99"), 18);
-        createProduct("0123456789012", "Altavoces Bluetooth", "Altavoces inalámbricos con excelente calidad de sonido", new BigDecimal("69.99"), 15);
+        createProduct("1234567890123", "Laptop HP ProBook", "Laptop de alta gama para uso profesional", new BigDecimal("999.99"), new BigDecimal("600"),10, tax, c1);
+        createProduct("2345678901234", "Monitor LG 24\"", "Monitor LED Full HD", new BigDecimal("199.99"),  new BigDecimal("70"),15, tax, c1);
+        createProduct("3456789012345", "Teclado Mecánico Logitech", "Teclado mecánico con retroiluminación RGB", new BigDecimal("89.99"), new BigDecimal("35"),20, tax, c1);
+        createProduct("4567890123456", "Mouse Inalámbrico", "Mouse ergonómico inalámbrico", new BigDecimal("29.99"), new BigDecimal("10"),30, tax, c1);
+        createProduct("5678901234567", "Disco Duro SSD 1TB", "Disco de estado sólido de alta velocidad", new BigDecimal("149.99"), new BigDecimal("85.50"), 25, tax, c1);
+        createProduct("6789012345678", "Memoria RAM 16GB", "Memoria RAM DDR4 de alta velocidad", new BigDecimal("79.99"), new BigDecimal("29.99"), 40, tax, c2);
+        createProduct("7890123456789", "Impresora HP LaserJet", "Impresora láser monocromática", new BigDecimal("249.99"), new BigDecimal("100.99"), 8, tax, c2);
+        createProduct("8901234567890", "Router WiFi", "Router de doble banda con alta cobertura", new BigDecimal("59.99"), new BigDecimal("29.99"), 12, tax, c2);
+        createProduct("9012345678901", "Cámara Web HD", "Cámara web con micrófono integrado", new BigDecimal("39.99"),new BigDecimal("23"), 18, tax, c2);
+        createProduct("0123456789012", "Altavoces Bluetooth", "Altavoces inalámbricos con excelente calidad de sonido", new BigDecimal("69.99"), new BigDecimal("29.99"), 15, tax, c2);
     }
 
     /**
@@ -134,8 +150,17 @@ public class DataInitializer implements CommandLineRunner {
      * @param stock The initial stock
      * @return The created product
      */
-    private Product createProduct(String barcode, String name, String description, BigDecimal price, Integer stock) {
-        Product product = new Product(barcode, name, description, price, stock);
+    private Product createProduct(String barcode, String name, String description, BigDecimal price,BigDecimal cost, Integer stock, Tax tax, Category category) {
+        Product product = new Product(barcode, name, description, this.createPrice(price, tax), true, category);
         return productRepository.save(product);
+    }
+
+    private Price createPrice(BigDecimal value, Tax tax) {
+        Price price = new Price();
+        price.setSalePrice(value);
+        price.setPurchasePrice(value.subtract(new BigDecimal("5")));
+        price.setUpdateDate(LocalDateTime.now());
+        price.setTax(tax);
+        return priceRepository.save(price);
     }
 }

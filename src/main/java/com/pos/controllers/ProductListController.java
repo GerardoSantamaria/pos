@@ -1,7 +1,8 @@
 package com.pos.controllers;
 
 import atlantafx.base.theme.Styles;
-import com.pos.config.StageManager;
+import atlantafx.base.theme.Tweaks;
+import com.pos.manager.StageManager;
 import com.pos.config.ViewConfiguration;
 import com.pos.models.Product;
 import com.pos.services.AuthService;
@@ -17,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -51,6 +53,9 @@ public class ProductListController implements Initializable {
 
     @FXML
     private TableColumn<Product, BigDecimal> priceColumn;
+
+    @FXML
+    private TableColumn<Product, BigDecimal> costColumn;
 
     @FXML
     private TableColumn<Product, Integer> stockColumn;
@@ -170,12 +175,27 @@ public class ProductListController implements Initializable {
             }
         });
 
+        costColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCost()));
+        costColumn.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(BigDecimal price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty || price == null) {
+                    setText(null);
+                } else {
+                    setText(NumberFormat.getCurrencyInstance().format(price));
+                }
+            }
+        });
+
         stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         // Configure actions column
+        actionsColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
         actionsColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue()));
         actionsColumn.setCellFactory(getActionColumnCellFactory());
 
+        productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         // Set table items
         productTable.setItems(productList);
     }
@@ -185,7 +205,7 @@ public class ProductListController implements Initializable {
      */
     private void initializeSortOptions() {
         // Populate sort by combo box
-        sortByComboBox.getItems().addAll("ID", "Código", "Nombre", "Precio", "Stock");
+        sortByComboBox.getItems().addAll("ID", "Código", "Nombre", "Precio", "Costo", "Stock");
         sortByComboBox.setValue("ID");
         sortByComboBox.setOnAction(event -> {
             switch (sortByComboBox.getValue()) {
@@ -200,6 +220,9 @@ public class ProductListController implements Initializable {
                     break;
                 case "Precio":
                     currentSortBy = "price";
+                    break;
+                case "Costo":
+                    currentSortBy = "cost";
                     break;
                 case "Stock":
                     currentSortBy = "stock";

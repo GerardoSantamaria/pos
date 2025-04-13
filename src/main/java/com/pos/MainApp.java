@@ -1,6 +1,7 @@
 package com.pos;
 
-import com.pos.config.StageManager;
+import com.pos.manager.CssManager;
+import com.pos.manager.StageManager;
 import com.pos.config.ViewConfiguration;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,7 +18,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class MainApp extends Application {
 
 	private ConfigurableApplicationContext springContext;
-	private StageManager stageManager;
 
 	/**
 	 * Main method that launches the JavaFX application.
@@ -45,12 +45,14 @@ public class MainApp extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) {
-		stageManager = springContext.getBean(StageManager.class);
+        StageManager stageManager = springContext.getBean(StageManager.class);
 		stageManager.setPrimaryStage(primaryStage);
+
+		CssManager cssManager = springContext.getBean(CssManager.class);
+		cssManager.setDefaultTheme();
 
 		// Set application title
 		primaryStage.setTitle("POS System");
-
 		// Display login screen
 		stageManager.switchScene(ViewConfiguration.LOGIN_VIEW);
 	}

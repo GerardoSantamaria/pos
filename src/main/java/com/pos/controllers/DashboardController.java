@@ -1,8 +1,7 @@
 package com.pos.controllers;
 
-import com.pos.config.StageManager;
+import com.pos.manager.StageManager;
 import com.pos.config.ViewConfiguration;
-import com.pos.models.User;
 import com.pos.services.AuthService;
 import com.pos.services.ProductService;
 import javafx.animation.FadeTransition;
@@ -24,7 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 

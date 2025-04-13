@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.DashboardController">
+<BorderPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.DashboardController">
     <left>
         <VBox fx:id="sideMenu" minWidth="200.0" prefWidth="200.0" styleClass="side-menu" BorderPane.alignment="CENTER">
             <children>

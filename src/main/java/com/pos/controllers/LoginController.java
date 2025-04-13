@@ -1,6 +1,6 @@
 package com.pos.controllers;
 
-import com.pos.config.StageManager;
+import com.pos.manager.StageManager;
 import com.pos.config.ViewConfiguration;
 import com.pos.services.AuthService;
 import javafx.animation.FadeTransition;

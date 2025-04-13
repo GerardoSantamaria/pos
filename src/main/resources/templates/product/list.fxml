@@ -8,12 +8,13 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.ProductListController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.ProductListController">
     <top>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <children>
@@ -32,9 +33,9 @@
                 </HBox>
                   <HBox spacing="5.0">
                       <children>
-                          <Label text="Ordenar por:" />
-                          <ComboBox fx:id="sortByComboBox" prefWidth="100.0" />
-                          <ComboBox fx:id="sortDirectionComboBox" prefWidth="120.0" />
+                          <Label prefHeight="21.0" prefWidth="78.0" text="Ordenar por:" />
+                          <ComboBox fx:id="sortByComboBox" prefHeight="25.0" prefWidth="164.0" />
+                          <ComboBox fx:id="sortDirectionComboBox" prefHeight="25.0" prefWidth="182.0" />
                       </children>
                   </HBox>
             </children>
@@ -43,24 +44,29 @@
             </BorderPane.margin>
         </VBox>
     </top>
-    <center>
-        <TableView fx:id="productTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <columns>
-                <TableColumn fx:id="idColumn" maxWidth="80.0" minWidth="50.0" prefWidth="50.0" text="ID" />
-                <TableColumn fx:id="barcodeColumn" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="120.0" text="Código de Barras" />
-                <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="203.0" text="Nombre" />
-                <TableColumn fx:id="priceColumn" maxWidth="150.0" minWidth="80.0" prefWidth="122.0" text="Precio" />
-                <TableColumn fx:id="stockColumn" maxWidth="100.0" minWidth="60.0" prefWidth="80.0" text="Stock" />
-                <TableColumn fx:id="actionsColumn" maxWidth="200.0" minWidth="120.0" prefWidth="150.0" text="Acciones" />
-            </columns>
-            <BorderPane.margin>
-                <Insets left="20.0" right="20.0" />
-            </BorderPane.margin>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-        </TableView>
-    </center>
+   <left>
+      <AnchorPane fx:id="anchorPaneTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <children>
+              <TableView fx:id="productTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                  <columnResizePolicy>
+                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
+                  <columns>
+                      <TableColumn fx:id="idColumn" maxWidth="80.0" minWidth="50.0" prefWidth="50.0" text="ID" />
+                      <TableColumn fx:id="barcodeColumn" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="120.0" text="Código de Barras" />
+                      <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="203.0" text="Nombre" />
+                      <TableColumn fx:id="priceColumn" maxWidth="150.0" minWidth="80.0" prefWidth="122.0" text="Precio" />
+                  <TableColumn fx:id="costColumn" maxWidth="150.0" minWidth="80.0" prefWidth="122.0" text="Costo" />
+                      <TableColumn fx:id="stockColumn" maxWidth="100.0" minWidth="60.0" prefWidth="80.0" text="Stock" />
+                      <TableColumn fx:id="actionsColumn" maxWidth="200.0" minWidth="120.0" prefWidth="150.0" text="Acciones" />
+                  </columns>
+              </TableView>
+         </children>
+      </VBox>
+   </center>
     <bottom>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
