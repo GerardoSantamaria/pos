@@ -1,6 +1,7 @@
 package com.pos.controllers.products;
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import org.springframework.stereotype.Controller;
 
@@ -14,5 +15,14 @@ public class CategoryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    public void onSearch(ActionEvent actionEvent) {
+    }
+
+    public void onUpdate(ActionEvent actionEvent) {
+    }
+
+    public void onCreateCategory(ActionEvent actionEvent) {
     }
 }

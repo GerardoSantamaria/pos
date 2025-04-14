@@ -9,16 +9,8 @@
    <children>
       <TabPane fx:id="inventoryTabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="productTab" text="Productos">
-            <content>
-              <AnchorPane fx:id="productsTab" minHeight="0.0" minWidth="0.0" prefHeight="297.0" prefWidth="457.0" />
-            </content>
-          </Tab>
-          <Tab fx:id="categoryTab" text="Categoria">
-            <content>
-              <AnchorPane fx:id="categoryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </Tab>
+          <Tab fx:id="productTab" text="Productos" />
+          <Tab fx:id="categoryTab" text="Categoria" />
         </tabs>
       </TabPane>
    </children>
