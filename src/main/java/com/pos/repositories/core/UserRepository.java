@@ -1,6 +1,6 @@
-package com.pos.repositories;
+package com.pos.repositories.core;
 
-import com.pos.models.User;
+import com.pos.models.core.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

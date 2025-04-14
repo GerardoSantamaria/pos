@@ -1,9 +1,9 @@
-package com.pos.services;
+package com.pos.services.core;
 
-import com.pos.models.User;
-import com.pos.models.Role;
-import com.pos.repositories.UserRepository;
-import com.pos.repositories.RoleRepository;
+import com.pos.models.core.User;
+import com.pos.models.core.Role;
+import com.pos.repositories.core.UserRepository;
+import com.pos.repositories.core.RoleRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

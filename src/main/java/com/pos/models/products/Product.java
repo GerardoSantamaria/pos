@@ -1,9 +1,8 @@
-package com.pos.models;
+package com.pos.models.products;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
-import java.sql.Date;
+
 import java.sql.Timestamp;
 
 /**

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="450.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.LoginController">
+<AnchorPane fx:id="rootPane" prefHeight="450.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.core.LoginController">
     <children>
         <VBox alignment="CENTER" layoutX="150.0" layoutY="75.0" prefHeight="250.0" prefWidth="300.0" spacing="15.0" styleClass="login-card" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="75.0">
             <children>

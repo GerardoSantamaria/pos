@@ -1,7 +1,7 @@
-package com.pos.controllers;
+package com.pos.controllers.products;
 
-import com.pos.models.Product;
-import com.pos.services.ProductService;
+import com.pos.models.products.Product;
+import com.pos.services.products.ProductService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

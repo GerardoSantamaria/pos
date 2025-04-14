@@ -1,13 +1,22 @@
 package com.pos.config;
 
-import com.pos.models.*;
-import com.pos.repositories.*;
+import com.pos.models.core.Role;
+import com.pos.models.core.User;
+import com.pos.models.products.Category;
+import com.pos.models.products.Price;
+import com.pos.models.products.Product;
+import com.pos.models.products.Tax;
+import com.pos.repositories.core.RoleRepository;
+import com.pos.repositories.core.UserRepository;
+import com.pos.repositories.products.CategoryRepository;
+import com.pos.repositories.products.PriceRepository;
+import com.pos.repositories.products.ProductRepository;
+import com.pos.repositories.products.TaxRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.annotation.Target;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -150,7 +159,7 @@ public class DataInitializer implements CommandLineRunner {
      * @param stock The initial stock
      * @return The created product
      */
-    private Product createProduct(String barcode, String name, String description, BigDecimal price,BigDecimal cost, Integer stock, Tax tax, Category category) {
+    private Product createProduct(String barcode, String name, String description, BigDecimal price, BigDecimal cost, Integer stock, Tax tax, Category category) {
         Product product = new Product(barcode, name, description, this.createPrice(price, tax), true, category);
         return productRepository.save(product);
     }

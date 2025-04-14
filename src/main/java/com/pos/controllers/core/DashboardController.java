@@ -1,9 +1,9 @@
-package com.pos.controllers;
+package com.pos.controllers.core;
 
-import com.pos.manager.StageManager;
+import com.pos.manager.core.StageManager;
 import com.pos.config.ViewConfiguration;
-import com.pos.services.AuthService;
-import com.pos.services.ProductService;
+import com.pos.services.core.AuthService;
+import com.pos.services.products.ProductService;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

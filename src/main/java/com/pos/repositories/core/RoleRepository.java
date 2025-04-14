@@ -1,6 +1,6 @@
-package com.pos.repositories;
+package com.pos.repositories.core;
 
-import com.pos.models.Role;
+import com.pos.models.core.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

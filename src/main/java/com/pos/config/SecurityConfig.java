@@ -1,6 +1,6 @@
 package com.pos.config;
 
-import com.pos.services.UserService;
+import com.pos.services.core.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

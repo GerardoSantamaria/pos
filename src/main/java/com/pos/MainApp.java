@@ -1,7 +1,7 @@
 package com.pos;
 
-import com.pos.manager.CssManager;
-import com.pos.manager.StageManager;
+import com.pos.manager.core.CssManager;
+import com.pos.manager.core.StageManager;
 import com.pos.config.ViewConfiguration;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -49,7 +49,7 @@ public class MainApp extends Application {
 		stageManager.setPrimaryStage(primaryStage);
 
 		CssManager cssManager = springContext.getBean(CssManager.class);
-		cssManager.setDefaultTheme();
+		cssManager.setLightTheme();
 
 		// Set application title
 		primaryStage.setTitle("POS System");

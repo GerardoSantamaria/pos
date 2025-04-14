@@ -1,4 +1,4 @@
-package com.pos.models;
+package com.pos.models.core;
 
 import jakarta.persistence.*;
 import java.util.HashSet;

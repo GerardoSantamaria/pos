@@ -1,12 +1,12 @@
-package com.pos.controllers;
+package com.pos.controllers.products;
 
 import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
-import com.pos.manager.StageManager;
+import com.pos.manager.core.StageManager;
 import com.pos.config.ViewConfiguration;
-import com.pos.models.Product;
-import com.pos.services.AuthService;
-import com.pos.services.ProductService;
+import com.pos.models.products.Product;
+import com.pos.services.core.AuthService;
+import com.pos.services.products.ProductService;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -18,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;

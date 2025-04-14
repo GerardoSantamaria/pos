@@ -1,6 +1,6 @@
-package com.pos.repositories;
+package com.pos.repositories.products;
 
-import com.pos.models.Product;
+import com.pos.models.products.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

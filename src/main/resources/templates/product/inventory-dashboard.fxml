@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pos.controllers.products.InventoryDashboard">
+   <children>
+      <TabPane fx:id="inventoryTabPane" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="productTab" text="Productos">
+            <content>
+              <AnchorPane fx:id="productsTab" minHeight="0.0" minWidth="0.0" prefHeight="297.0" prefWidth="457.0" />
+            </content>
+          </Tab>
+          <Tab fx:id="categoryTab" text="Categoria">
+            <content>
+              <AnchorPane fx:id="categoryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

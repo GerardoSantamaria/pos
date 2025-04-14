@@ -31,6 +31,11 @@ public class ViewConfiguration {
     public static final String PRODUCT_FORM_VIEW = "/templates/product/form.fxml";
 
     /**
+     * Path to the dashboard invetory form view FXML.
+     */
+    public static final String INVENTORY_DASHBOARD_VIEW = "/templates/product/inventory-dashboard.fxml";
+
+    /**
      * Path to the user management view FXML.
      */
     public static final String USER_MANAGEMENT_VIEW = "/templates/user/management.fxml";

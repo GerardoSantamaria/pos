@@ -1,8 +1,6 @@
-package com.pos.manager;
+package com.pos.manager.core;
 
 
-import atlantafx.base.theme.PrimerLight;
-import com.pos.config.ViewConfiguration;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

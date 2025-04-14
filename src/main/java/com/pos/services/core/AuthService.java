@@ -1,4 +1,4 @@
-package com.pos.services;
+package com.pos.services.core;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
