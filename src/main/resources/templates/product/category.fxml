@@ -38,12 +38,15 @@
    <center>
       <AnchorPane prefHeight="262.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView layoutY="-2.0" prefHeight="279.0" prefWidth="600.0" styleClass="page-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <TableView fx:id="categoryTable" layoutY="-2.0" prefHeight="279.0" prefWidth="600.0" styleClass="page-title" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <columns>
-                <TableColumn prefWidth="187.0" text="Nombre" />
-                <TableColumn prefWidth="215.0" text="Descripcion" />
-                  <TableColumn fx:id="tableActions" prefWidth="197.0" text="Acciones" />
+                <TableColumn fx:id="nameColum" prefWidth="187.0" text="Nombre" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="215.0" text="Descripcion" />
+                  <TableColumn fx:id="actionsColumn" prefWidth="197.0" text="Acciones" />
               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
             </TableView>
          </children>
          <padding>
