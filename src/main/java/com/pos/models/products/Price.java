@@ -13,10 +13,6 @@ public class Price {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-
     @Column(name = "purchase_price", nullable = false, precision = 12, scale = 2)
     private BigDecimal purchasePrice;
 
@@ -36,9 +32,8 @@ public class Price {
     // Constructores
     public Price() {}
 
-    public Price(Product product, BigDecimal purchasePrice, BigDecimal salePrice,
+    public Price(BigDecimal purchasePrice, BigDecimal salePrice,
                  BigDecimal wholesalePrice, Tax tax) {
-        this.product = product;
         this.purchasePrice = purchasePrice;
         this.salePrice = salePrice;
         this.wholesalePrice = wholesalePrice;
@@ -48,9 +43,6 @@ public class Price {
     // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
-    public Product getProduct() { return product; }
-    public void setProduct(Product product) { this.product = product; }
 
     public BigDecimal getPurchasePrice() { return purchasePrice; }
     public void setPurchasePrice(BigDecimal purchasePrice) { this.purchasePrice = purchasePrice; }

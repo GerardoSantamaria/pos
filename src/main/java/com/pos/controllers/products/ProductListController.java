@@ -2,8 +2,8 @@ package com.pos.controllers.products;
 
 import atlantafx.base.theme.Styles;
 import atlantafx.base.theme.Tweaks;
-import com.pos.manager.core.StageManager;
 import com.pos.config.ViewConfiguration;
+import com.pos.manager.core.StageManager;
 import com.pos.models.products.Product;
 import com.pos.services.core.AuthService;
 import com.pos.services.products.ProductService;
@@ -161,7 +161,7 @@ public class ProductListController implements Initializable {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         // Format price column
-        priceColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
+        //priceColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
         priceColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(BigDecimal price, boolean empty) {
@@ -174,7 +174,7 @@ public class ProductListController implements Initializable {
             }
         });
 
-        costColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCost()));
+        //costColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCost()));
         costColumn.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(BigDecimal price, boolean empty) {

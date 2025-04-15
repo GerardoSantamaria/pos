@@ -6,11 +6,6 @@ package com.pos.config;
 public class ViewConfiguration {
 
     /**
-     * Path css basic
-     */
-    public static final String CSS_default = "/static/css/primer-light.css";
-    //public static final String CSS_default = "/static/css/light-theme.css";
-    /**
      * Path to the login view FXML.
      */
     public static final String LOGIN_VIEW = "/templates/login.fxml";
@@ -34,6 +29,9 @@ public class ViewConfiguration {
      * Path to the dashboard invetory form view FXML.
      */
     public static final String INVENTORY_DASHBOARD_VIEW = "/templates/product/inventory-dashboard.fxml";
+
+    public static final String CATEGORY_VIEW = "/templates/product/category.fxml";
+    public static final String CATEGORY_FORM_VIEW = "/templates/product/category-form.fxml";
 
     /**
      * Path to the user management view FXML.

@@ -5,7 +5,7 @@ import com.pos.config.ViewConfiguration;
 public enum InventoryView {
 
     PRODUCT_TAB("productTab", ViewConfiguration.PRODUCT_LIST_VIEW),
-    CATEGORY_TAB("categoryTab", "");
+    CATEGORY_TAB("categoryTab", ViewConfiguration.CATEGORY_VIEW);
 
     private final String tabId;
     private final String pathView;

@@ -1,5 +1,6 @@
 package com.pos.controllers.products;
 
+import com.pos.interfaces.core.FormInitialize;
 import com.pos.models.products.Product;
 import com.pos.services.products.ProductService;
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.util.ResourceBundle;
  * Controller for the product form view.
  */
 @Controller
-public class ProductFormController implements Initializable {
+public class ProductFormController implements Initializable, FormInitialize {
 
     @FXML
     private TextField barcodeField;
@@ -117,8 +118,8 @@ public class ProductFormController implements Initializable {
             nameField.setText(product.getName());
             descriptionArea.setText(product.getDescription());
             priceField.setText(product.getPrice().toString());
-            costField.setText(product.getCost().toString());
-            stockField.setText(product.getStock().toString());
+            //costField.setText(product.getCost().toString());
+            //stockField.setText(product.getStock().toString());
         } else {
             // Creating new product
             titleLabel.setText("Agregar Producto");
@@ -190,9 +191,9 @@ public class ProductFormController implements Initializable {
         product.setBarcode(barcodeField.getText().trim());
         product.setName(nameField.getText().trim());
         product.setDescription(descriptionArea.getText().trim());
-        product.setPrice(new BigDecimal(priceField.getText().trim()));
-        product.setCost(new BigDecimal(costField.getText().trim()));
-        product.setStock(Integer.parseInt(stockField.getText().trim()));
+        //product.setPrice(new BigDecimal(priceField.getText().trim()));
+        //product.setCost(new BigDecimal(costField.getText().trim()));
+        //product.setStock(Integer.parseInt(stockField.getText().trim()));
     }
 
     /**
@@ -269,5 +270,10 @@ public class ProductFormController implements Initializable {
     private void closeForm() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
+    }
+
+    @Override
+    public <T> void formInitialize(T t) {
+
     }
 }

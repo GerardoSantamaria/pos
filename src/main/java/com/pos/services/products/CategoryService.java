@@ -14,16 +14,19 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
 
-    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
     }
 
     public List<CategoryDTO> getAllCategories() {
         List<Category> categories = this.categoryRepository.findAll();
-        return categoryMapper.toDtoList(categories);
+        return CategoryMapper.INSTANCE.toDtoList(categories);
+    }
+
+    public List<CategoryDTO> getCategoriesByNameContaining(String name) {
+        List<Category> categories = this.categoryRepository.findByNameContaining(name);
+        return CategoryMapper.INSTANCE.toDtoList(categories);
     }
 
     @Transactional
@@ -32,10 +35,10 @@ public class CategoryService {
             throw new ObjectNotFoundException("Category not found by id", categoryDTO.getId());
         };
 
-        Category category = this.categoryMapper.toEntity(categoryDTO);
+        Category category = CategoryMapper.INSTANCE.toEntity(categoryDTO);
         category = this.categoryRepository.save(category);
 
-        return  categoryMapper.toDto(category);
+        return  CategoryMapper.INSTANCE.toDto(category);
     }
 
     @Transactional
@@ -48,8 +51,8 @@ public class CategoryService {
         this.categoryRepository.findByName(categoryDTO.getName())
                 .ifPresent( category -> { throw new RuntimeException("Ya exsite una categoria con ese nombre");});
 
-        Category category = this.categoryMapper.toEntity(categoryDTO);
-        return this.categoryMapper.toDto(this.categoryRepository.save(category));
+        Category category = CategoryMapper.INSTANCE.toEntity(categoryDTO);
+        return CategoryMapper.INSTANCE.toDto(this.categoryRepository.save(category));
     }
 
     @Transactional
@@ -59,6 +62,6 @@ public class CategoryService {
 
         category.setActive(!category.isActive());
         this.categoryRepository.save(category);
-        return this.categoryMapper.toDto(category);
+        return CategoryMapper.INSTANCE.toDto(category);
     }
 }

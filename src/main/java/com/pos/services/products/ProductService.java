@@ -68,7 +68,7 @@ public class ProductService {
         existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
         existingProduct.setPrice(product.getPrice());
-        existingProduct.setStock(product.getStock());
+        //existingProduct.setStock(product.getStock());
 
         // Save updated product
         return productRepository.save(existingProduct);
@@ -154,7 +154,7 @@ public class ProductService {
         // Get existing product
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado: " + id));
-
+        /*
         // Calculate new stock
         int newStock = product.getStock() + quantity;
 
@@ -167,20 +167,10 @@ public class ProductService {
         // Update stock
         product.setStock(newStock);
 
+         */
+
         // Save updated product
         return productRepository.save(product);
     }
 
-    /**
-     * Finds products with low stock.
-     *
-     * @param threshold The low stock threshold
-     * @param page The page number (zero-based)
-     * @param size The page size
-     * @return A Page of products with stock at or below the threshold
-     */
-    public Page<Product> findLowStockProducts(int threshold, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return productRepository.findByStockLessThanEqual(threshold, pageable);
-    }
 }

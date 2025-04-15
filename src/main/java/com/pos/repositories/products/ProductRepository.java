@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.util.Optional;
 
 /**
@@ -39,12 +40,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE p.name LIKE %:searchTerm% OR p.barcode LIKE %:searchTerm%")
     Page<Product> searchByNameOrBarcode(@Param("searchTerm") String searchTerm, Pageable pageable);
 
-    /**
-     * Finds products with stock less than or equal to the specified threshold.
-     *
-     * @param threshold The stock threshold
-     * @param pageable The pagination information
-     * @return A Page of Product entities
-     */
-    Page<Product> findByStockLessThanEqual(Integer threshold, Pageable pageable);
+    //Page<Product> findByStockLessThanEqual(Integer threshold, Pageable pageable);
 }
