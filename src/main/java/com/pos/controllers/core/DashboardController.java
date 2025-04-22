@@ -1,7 +1,7 @@
 package com.pos.controllers.core;
 
-import com.pos.manager.core.StageManager;
 import com.pos.config.ViewConfiguration;
+import com.pos.manager.core.StageManager;
 import com.pos.services.core.AuthService;
 import com.pos.services.products.ProductService;
 import javafx.animation.FadeTransition;
@@ -179,7 +179,7 @@ public class DashboardController implements Initializable {
     private void openInventory() {
         try {
             // Cargar la vista de inventario en el área de contenido en lugar de cambiar de escena
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ViewConfiguration.PRODUCT_LIST_VIEW));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ViewConfiguration.INVENTORY_DASHBOARD));
             fxmlLoader.setControllerFactory(applicationContext::getBean);
 
             // Cargar el contenido

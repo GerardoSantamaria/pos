@@ -32,6 +32,7 @@ public class ViewConfiguration {
 
     public static final String CATEGORY_VIEW = "/templates/product/category.fxml";
     public static final String CATEGORY_FORM_VIEW = "/templates/product/category-form.fxml";
+    public static final String INVENTORY_DASHBOARD = "/templates/product/inventory-dashboard.fxml";
 
     /**
      * Path to the user management view FXML.

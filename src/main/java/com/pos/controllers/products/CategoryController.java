@@ -5,6 +5,7 @@ import atlantafx.base.theme.Tweaks;
 import com.pos.actions.products.CategoryActionCell;
 import com.pos.config.ViewConfiguration;
 import com.pos.dtos.products.CategoryDTO;
+import com.pos.manager.core.StageManager;
 import com.pos.services.core.AlertViewService;
 import com.pos.services.core.ModalViewService;
 import com.pos.services.products.CategoryService;
@@ -49,7 +50,7 @@ public class CategoryController implements Initializable {
     private TableColumn<CategoryDTO, String> descriptionColumn;
 
     @FXML
-    private TableColumn<CategoryDTO, CategoryDTO> actionColumn;
+    private TableColumn<CategoryDTO, CategoryDTO> actionsColumn;
 
     @FXML
     private TextField searchField;
@@ -63,17 +64,19 @@ public class CategoryController implements Initializable {
     private final CategoryService categoryService;
     private final ModalViewService modalViewService;
     private final AlertViewService alertViewService;
+    private final StageManager stageManager;
 
     public CategoryController(CategoryService categoryService,
-                              ModalViewService modalViewService, AlertViewService alertViewService) {
+                              ModalViewService modalViewService, AlertViewService alertViewService, StageManager stageManager) {
         this.categoryService = categoryService;
         this.modalViewService = modalViewService;
         this.alertViewService = alertViewService;
+        this.stageManager = stageManager;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        stage = (Stage)this.container.getScene().getWindow();
+        //stage = (Stage)this.container.getScene().getWindow();
         this.initializeTableCategory();
         this.initializeSearchText();
         this.loadCategory();
@@ -99,9 +102,9 @@ public class CategoryController implements Initializable {
         this.categoryTable.setRowFactory(this.getCategoryTableFactory());
         this.nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("descritpion"));
-        this.actionColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
-        this.actionColumn.setCellValueFactory(category -> new SimpleObjectProperty<>(category.getValue()));
-        this.actionColumn.setCellFactory(category -> new CategoryActionCell(this));
+        this.actionsColumn.getStyleClass().add(Tweaks.ALIGN_CENTER);
+        this.actionsColumn.setCellValueFactory(category -> new SimpleObjectProperty<>(category.getValue()));
+        this.actionsColumn.setCellFactory(category -> new CategoryActionCell(this));
     }
 
     private Callback<TableView<CategoryDTO>, TableRow<CategoryDTO>> getCategoryTableFactory() {

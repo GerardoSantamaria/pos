@@ -1,6 +1,5 @@
 package com.pos.services.core;
 
-import com.pos.config.ViewConfiguration;
 import com.pos.interfaces.core.FormInitialize;
 import com.pos.manager.core.StageManager;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +29,7 @@ public class ModalViewService {
     }
 
     public FXMLLoader createFxmlLoaderByPathView(String path) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ViewConfiguration.PRODUCT_FORM_VIEW));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
         fxmlLoader.setControllerFactory(applicationContext::getBean);
         return fxmlLoader;
     }
