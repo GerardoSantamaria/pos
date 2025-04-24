@@ -18,6 +18,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +33,8 @@ import java.util.ResourceBundle;
  */
 @Controller
 public class DashboardController implements Initializable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardController.class);
 
     @FXML
     private BorderPane rootPane;
@@ -98,6 +102,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Aplicar animación de entrada al panel raíz
+        LOGGER.info("Inicializando");
         FadeTransition fadeIn = new FadeTransition(Duration.millis(animationSpeed), rootPane);
         fadeIn.setFromValue(0.0);
         fadeIn.setToValue(1.0);
